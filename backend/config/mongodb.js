@@ -1,3 +1,4 @@
+
 import mongoose from "mongoose";
 
 const connectDB = async () => {
@@ -5,7 +6,20 @@ const connectDB = async () => {
     console.log("DB Connected 🦾🤷‍♂️");
   });
 
-  await mongoose.connect(`${process.env.MONGODB_URI}/e-commerce_forever`);
+  await mongoose.connect(`${process.env.MONGODB_URI}`, {
+    tlsAllowInvalidCertificates: true,
+  });
 };
 
 export default connectDB;
+// import mongoose from "mongoose";
+
+// const connectDB = async () => {
+//   mongoose.connection.on("connected", () => {
+//     console.log("DB Connected 🦾🤷‍♂️");
+//   });
+
+//   await mongoose.connect(`${process.env.MONGODB_URI}/e-commerce_forever`);
+// };
+
+// export default connectDB;
