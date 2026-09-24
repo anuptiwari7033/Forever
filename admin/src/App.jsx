@@ -4,6 +4,13 @@ import SideBar from "./components/SideBar";
 import Add from "./pages/Add";
 import List from "./pages/List";
 import Order from "./pages/Order";
+import MinutesStores from "./pages/minutes/MinutesStores";
+import MinutesCategories from "./pages/minutes/MinutesCategories";
+import MinutesProducts from "./pages/minutes/MinutesProducts";
+import MinutesOrders from "./pages/minutes/MinutesOrders";
+import Riders from "./pages/minutes/Riders";
+import LiveTracking from "./pages/minutes/LiveTracking";
+import Analytics from "./pages/minutes/Analytics";
 import { useEffect, useState } from "react";
 import Login from "./components/Login";
 import { ToastContainer } from "react-toastify";
@@ -37,6 +44,13 @@ const App = () => {
                 <Route path="/add" element={<Add token={token} />} />
                 <Route path="/list" element={<List token={token} />} />
                 <Route path="/order" element={<Order token={token} />} />
+                <Route path="/minutes/stores" element={<MinutesStores token={token} />} />
+                <Route path="/minutes/categories" element={<MinutesCategories token={token} />} />
+                <Route path="/minutes/products" element={<MinutesProducts token={token} />} />
+                <Route path="/minutes/orders" element={<MinutesOrders token={token} />} />
+                <Route path="/minutes/riders" element={<Riders token={token} />} />
+                <Route path="/minutes/live-tracking" element={<LiveTracking token={token} />} />
+                <Route path="/minutes/analytics" element={<Analytics token={token} />} />
               </Routes>
             </div>
           </div>
