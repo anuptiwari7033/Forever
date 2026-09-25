@@ -1,0 +1,51 @@
+services:
+  # ---- Redis: backing store for the BullMQ rider-assignment queues ----
+  redis:
+    image: redis:7-alpine
+    container_name: fm_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--appendonly", "yes"] # persist jobs across restarts (req 13)
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # ---- MongoDB (optional: remove this service if you use MongoDB Atlas) ----
+  mongo:
+    image: mongo:7
+    container_name: fm_mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  # ---- Backend API + Socket.IO + BullMQ workers ----
+  backend:
+    build: ./backend
+    container_name: fm_backend
+    restart: unless-stopped
+    depends_on:
+      redis:
+        condition: service_healthy
+      mongo:
+        condition: service_started
+    ports:
+      - "4000:4000"
+    env_file:
+      - ./backend/.env
+    environment:
+      # These override .env so the container talks to the compose services
+      # by name instead of 127.0.0.1.
+      REDIS_URL: redis://redis:6379
+      MONGODB_URI: mongodb://mongo:27017/forever_minutes
+      PORT: 4000
+
+volumes:
+  redis_data:
+  mongo_data:
